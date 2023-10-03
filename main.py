@@ -3,7 +3,7 @@ import logging
 import streamlit as st
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG, format='$(threadid)d %(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(thread)d %(asctime)s %(levelname)s %(message)s')
 
 logger.info(f'starting cycle with state {st.session_state}')
 
@@ -28,6 +28,8 @@ with tab1:
 
 
     submit_btn = form1.form_submit_button(label='Submit', on_click=form1_callback)
+    logger.info(f'submit_btn == {submit_btn}: st.session_state = {st.session_state}')
+
 
 with tab2:
     image_url = st.text_input(
