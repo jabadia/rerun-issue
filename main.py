@@ -6,9 +6,14 @@ import inspect
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG, format='%(thread)d %(asctime)s %(levelname)s %(message)s')
 
-logger.info(f'starting cycle with state {st.session_state}')
-msg_received = inspect.currentframe().f_back.f_back.f_locals['request']
-logger.info(f'because of message received {msg_received}')
+logger.warning(f'starting cycle with state {st.session_state}')
+frame = inspect.currentframe()
+while frame and not 'request' in frame.f_locals:
+    frame = frame.f_back
+if 'request' in frame.f_locals:
+    logger.info(f'because of message received {frame.f_locals["request"]}')
+else:
+    logger.info(f"because of message received -can't show it-")
 
 st.title('playground')
 
