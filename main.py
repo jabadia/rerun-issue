@@ -9,6 +9,9 @@ logger.info(f'starting cycle with state {st.session_state}')
 
 st.title('playground')
 
+if 'results' not in st.session_state:
+    st.session_state.results = []
+
 tab1, tab2 = st.tabs(['Tab1', 'Tab2'])
 
 with tab1:
@@ -23,12 +26,19 @@ with tab1:
     def form1_callback():
         logger.info(f'submitting form1 {st.session_state}')
         time.sleep(2)
+        st.session_state.results.append(f'{st.session_state.selected_city} has a special color')
         logger.info(f'submitted form1 {st.session_state}')
         st.write(f'form1 submitted: {st.session_state.selected_city}')
 
 
     submit_btn = form1.form_submit_button(label='Submit', on_click=form1_callback)
     logger.info(f'submit_btn == {submit_btn}: st.session_state = {st.session_state}')
+
+    st.title('results')
+    for result in st.session_state.results:
+        st.write(result)
+    else:
+        st.write('no results')
 
 
 with tab2:
