@@ -1,11 +1,14 @@
 import time
 import logging
 import streamlit as st
+import inspect
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG, format='$(threadid)d %(asctime)s %(levelname)s %(message)s')
 
 logger.info(f'starting cycle with state {st.session_state}')
+msg_received = inspect.currentframe().f_back.f_back.f_locals['request']
+logger.info(f'because of message received {msg_received}')
 
 st.title('playground')
 
