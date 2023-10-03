@@ -18,15 +18,16 @@ with tab1:
         options=['Madrid', 'Barcelona', 'Sevilla', 'Valencia', 'Bilbao', 'Zaragoza'],
         key='selected_city'
     )
-    submit_btn = form1.form_submit_button(label='Submit')
 
-    if submit_btn:
+
+    def form1_callback():
         logger.info(f'submitting form1 {st.session_state}')
         time.sleep(2)
         logger.info(f'submitted form1 {st.session_state}')
         st.write(f'form1 submitted: {st.session_state.selected_city}')
-    else:
-        st.write(f'form1 not submitted')
+
+
+    submit_btn = form1.form_submit_button(label='Submit', on_click=form1_callback)
 
 with tab2:
     image_url = st.text_input(
