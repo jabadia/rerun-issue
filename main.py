@@ -31,23 +31,29 @@ with tab1:
     )
 
 
-    def form1_callback():
+    def form1_submit_cb():
         logger.info(f'submitting form1 {st.session_state}')
-        time.sleep(2)
-        st.session_state.results.append(f'{st.session_state.selected_city} has a special color')
+        st.session_state.pending_calculations = 4
         logger.info(f'submitted form1 {st.session_state}')
-        st.write(f'form1 submitted: {st.session_state.selected_city}')
+        # st.write(f'form1 submitted: {st.session_state.selected_city}')
 
 
-    submit_btn = form1.form_submit_button(label='Submit', on_click=form1_callback)
+    def clear_results_cb():
+        st.session_state.results = []
+        logger.info(f'cleared results {st.session_state}')
+
+
+    submit_btn = form1.form_submit_button(label='Submit', on_click=form1_submit_cb)
     logger.info(f'submit_btn == {submit_btn}: st.session_state = {st.session_state}')
 
+    st.button('clear results', on_click=clear_results_cb)
+
     st.title('results')
+
     for result in st.session_state.results:
         st.write(result)
     if not st.session_state.results:
         st.write('no results')
-
 
 with tab2:
     image_url = st.text_input(
@@ -61,4 +67,14 @@ with tab2:
         disabled=bool(image_url)
     )
 
-logger.info('cycle finished')
+# do pending processing
+if st.session_state.get('pending_calculations', 0):
+    i = st.session_state.pending_calculations
+    logger.debug(f'generating result {i}')
+    time.sleep(3)
+    st.session_state.results.append(f'{st.session_state.selected_city} has a special color {i}')
+    st.session_state.pending_calculations -= 1
+    logger.info(f'rerunning, pending calculations = {st.session_state.pending_calculations}')
+    st.rerun()
+
+logger.warning('cycle finished')
