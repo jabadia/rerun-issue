@@ -40,7 +40,7 @@ with tab1:
     st.title('results')
     for result in st.session_state.results:
         st.write(result)
-    else:
+    if not st.session_state.results:
         st.write('no results')
 
 
